@@ -7,7 +7,7 @@ import os
 
 def DarkChannel(im,sz):
     b,g,r = cv2.split(im)
-    dc = cv2.min(cv2.min(r,g),b)    # Takes minimum 
+    dc = cv2.min(cv2.min(r,g),b)
     kernel = cv2.getStructuringElement(cv2.MORPH_RECT,(sz,sz))
     dark = cv2.erode(dc,kernel)
     return dark
@@ -80,22 +80,20 @@ if __name__ == '__main__':
     fn = os.listdir('./image/')
     # list_of_image_addresses = glob.glob(fn)
     print(fn)
-    for img in fn:
-        src = cv2.imread('./image/'+img)
+    # for img in fn:
+    src = cv2.imread('./image/'+"0.jpg")
 
-        I = src.astype('float64')/255
-        
-        # dark = DarkChannel(I,15)
-        # A = AtmLight(I,dark)
-        # te = TransmissionEstimate(I,A,15)
-        # t = TransmissionRefine(src,te)
-        # J = Recover(I,t,A,0.1)
+    I = src.astype('float64')/255
+    
+    dark = DarkChannel(I,15)
+    A = AtmLight(I,dark)
+    te = TransmissionEstimate(I,A,15)
+    t = TransmissionRefine(src,te)
+    J = Recover(I,t,A,0.1)
 
-        print(f"Variables- \nsrc = {src} \nI = {I}")
-
-        # cv2.imshow("dark",dark)
-        # cv2.imshow("t",t)
-        # cv2.imshow('I',src)
-        # cv2.imshow('J',J)
-        # cv2.imwrite("./result/final_" + img,J*255)
-        # cv2.waitKey()
+    cv2.imshow('I',src)
+    cv2.imshow("dark",dark)
+    cv2.imshow("t",t)
+    cv2.imshow('J',J)
+    # cv2.imwrite("./result/final_" + img,J*255)
+    cv2.waitKey()
