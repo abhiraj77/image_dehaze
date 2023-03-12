@@ -77,23 +77,25 @@ def Recover(im,t,A,tx = 0.1):
 
 if __name__ == '__main__':
 
-    fn = os.listdir('./image/')
+    # fn = os.listdir('./image/')
     # list_of_image_addresses = glob.glob(fn)
-    print(fn)
+    # print(fn)
     # for img in fn:
-    src = cv2.imread('./image/'+"0.jpg")
+    src = cv2.imread('D:\RESIDE-DATASET\Original\ITS\hazy\\'+"1000_1.png")
 
     I = src.astype('float64')/255
     
     dark = DarkChannel(I,15)
     A = AtmLight(I,dark)
     te = TransmissionEstimate(I,A,15)
+    print(f"src={src}\nte = {te}")
     t = TransmissionRefine(src,te)
+    print(f"t={t}")
     J = Recover(I,t,A,0.1)
 
     cv2.imshow('I',src)
     cv2.imshow("dark",dark)
     cv2.imshow("t",t)
     cv2.imshow('J',J)
-    # cv2.imwrite("./result/final_" + img,J*255)
+    cv2.imwrite('D:\RESIDE-DATASET\Proprocessed\ITS\\1_1.png',J*255)
     cv2.waitKey()
