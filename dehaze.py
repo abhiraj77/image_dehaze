@@ -1,6 +1,7 @@
 import cv2
 import math
 import numpy as np
+import matplotlib.pyplot as plt
 import sys
 import glob
 import os
@@ -81,21 +82,27 @@ if __name__ == '__main__':
     # list_of_image_addresses = glob.glob(fn)
     # print(fn)
     # for img in fn:
-    src = cv2.imread('D:\RESIDE-DATASET\Original\ITS\hazy\\'+"1000_1.png")
+    src = cv2.imread('D:\RESIDE-DATASET\Original\ITS\hazy\\'+"1_2.png")
 
     I = src.astype('float64')/255
     
     dark = DarkChannel(I,15)
     A = AtmLight(I,dark)
     te = TransmissionEstimate(I,A,15)
-    print(f"src={src}\nte = {te}")
+    # print(f"src={src}\nte = {te}")
     t = TransmissionRefine(src,te)
-    print(f"t={t}")
+    # print(f"t={t}")
     J = Recover(I,t,A,0.1)
+
+    plt.imshow(I)
 
     cv2.imshow('I',src)
     cv2.imshow("dark",dark)
     cv2.imshow("t",t)
     cv2.imshow('J',J)
-    cv2.imwrite('D:\RESIDE-DATASET\Proprocessed\ITS\\1_1.png',J*255)
+    # cv2.imwrite('D:\RESIDE-DATASET\Proprocessed\ITS\\0062_clear.png',I*255)
+    # cv2.imwrite('D:\RESIDE-DATASET\Proprocessed\ITS\\0062_clear_dark.png',dark*255)
+    # cv2.imwrite('D:\RESIDE-DATASET\Proprocessed\ITS\\0062_clear_transmission_estitmate.png',te*255)
+    # cv2.imwrite('D:\RESIDE-DATASET\Proprocessed\ITS\\0062_clear_transimission_map.png',t*255)
+    # cv2.imwrite('D:\RESIDE-DATASET\Proprocessed\ITS\\0062_clear_final_recovered_image.png',J*255)
     cv2.waitKey()
