@@ -2,9 +2,6 @@ import cv2
 import math
 import numpy as np
 import matplotlib.pyplot as plt
-import sys
-import glob
-import os
 
 def DarkChannel(im,sz):
     b,g,r = cv2.split(im)
