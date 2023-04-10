@@ -18,10 +18,10 @@ def AtmLight(im,dark):
     imvec = im.reshape(imsz,3)
 
     indices = darkvec.argsort()
-    indices = indices[imsz-numpx::]
+    indices = indices[-numpx::]
 
     atmsum = np.zeros([1,3])
-    for ind in range(1,numpx):
+    for ind in range(numpx):
        atmsum = atmsum + imvec[indices[ind]]
 
     A = atmsum / numpx
@@ -52,6 +52,8 @@ def Guidedfilter(im,p,r,eps):
     mean_a = cv2.boxFilter(a,cv2.CV_64F,(r,r))
     mean_b = cv2.boxFilter(b,cv2.CV_64F,(r,r))
 
+    print(f"mean_I = {mean_I}\nim = {im}")
+
     q = mean_a*im + mean_b
     return q
 
@@ -79,7 +81,7 @@ if __name__ == '__main__':
     # list_of_image_addresses = glob.glob(fn)
     # print(fn)
     # for img in fn:
-    src = cv2.imread('D:\RESIDE-DATASET\Original\ITS\hazy\\'+"1_2.png")
+    src = cv2.imread('D:\RESIDE-DATASET\Original\OTS\clear\\'+"0062.png")
 
     I = src.astype('float64')/255
     
