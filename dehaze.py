@@ -57,12 +57,12 @@ def Guidedfilter(im,p,r,eps):
     q = mean_a*im + mean_b
     return q
 
-def TransmissionRefine(im,et):
+def TransmissionRefine(im,te):
     gray = cv2.cvtColor(im,cv2.COLOR_BGR2GRAY)
     gray = np.float64(gray)/255
     r = 60
     eps = 0.0001
-    t = Guidedfilter(gray,et,r,eps)
+    t = Guidedfilter(gray,te,r,eps)
 
     return t
 
