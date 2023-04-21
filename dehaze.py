@@ -43,18 +43,22 @@ def Guidedfilter(im,p,r,eps):
     mean_Ip = cv2.boxFilter(im*p,cv2.CV_64F,(r,r))
     cov_Ip = mean_Ip - mean_I*mean_p
 
+    # print(f"cov_Ip = {cov_Ip}")
     mean_II = cv2.boxFilter(im*im,cv2.CV_64F,(r,r))
     var_I   = mean_II - mean_I*mean_I
+
 
     a = cov_Ip/(var_I + eps)
     b = mean_p - a*mean_I
 
     mean_a = cv2.boxFilter(a,cv2.CV_64F,(r,r))
     mean_b = cv2.boxFilter(b,cv2.CV_64F,(r,r))
-
-    print(f"mean_I = {mean_I}\nim = {im}")
+    
 
     q = mean_a*im + mean_b
+    print(f"cov_Ip = {cov_Ip}\na = {a}")
+    print(f"var_I = {var_I}")
+    # cv2.imshow('q',q)
     return q
 
 def TransmissionRefine(im,te):
@@ -77,20 +81,14 @@ def Recover(im,t,A,tx = 0.1):
 
 if __name__ == '__main__':
 
-    # fn = os.listdir('./image/')
-    # list_of_image_addresses = glob.glob(fn)
-    # print(fn)
-    # for img in fn:
-    src = cv2.imread('D:\RESIDE-DATASET\Original\OTS\clear\\'+"0062.png")
+    src = cv2.imread('D:\RESIDE-DATASET\Original\OTS\hazy\\'+"0176_6.png")
 
     I = src.astype('float64')/255
     
     dark = DarkChannel(I,15)
     A = AtmLight(I,dark)
     te = TransmissionEstimate(I,A,15)
-    # print(f"src={src}\nte = {te}")
     t = TransmissionRefine(src,te)
-    # print(f"t={t}")
     J = Recover(I,t,A,0.1)
 
     plt.imshow(I)
